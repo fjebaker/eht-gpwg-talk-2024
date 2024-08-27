@@ -1,7 +1,7 @@
 #import "@preview/polylux:0.3.1": *
 #import "tamburlaine.typ": *
 
-#let HANDOUT_MODE = true
+#let HANDOUT_MODE = false
 #enable-handout-mode(HANDOUT_MODE)
 
 #show: tamburlaine-theme.with(aspect-ratio: "4-3")
@@ -206,7 +206,8 @@
 #slide(title: "Accretion in X-ray")[
   #v(-2.5em)
   #grid(
-    columns: (58%, 40%),
+    columns: (58%, 1fr),
+    column-gutter: 10pt,
     [
       #move(
         dx: -1em,
@@ -222,21 +223,60 @@
           handout: HANDOUT_MODE,
         )
       )
+      #v(1em)
+      #set text(size: 20pt)
+      Measuring *metric parameters* using properties of the Fe K$alpha$ line (6.4 keV)
+      - Interested in how *geometry* of *(spacetime|disc|corona)* changes spectra
+      - Relativistic models of *reflection spectra* and associated *reverberation lags*
+      - Convolve *line profile* with the reflection spectrum to embed GR effects
     ],
     [
-      #v(3.5em)
-      Hello World
+      #v(3.0em)
+      #image(width: 90%, "./figs/reflection-spectrum.svg")
+      #text(size: 12pt)[Reflection spectra using version of `reflionx` of Ross, 1978.]
+
+      #image(width: 85%, "./figs/line-profile-kerr.svg")
     ]
   )
+]
 
-  #set align(horizon)
+#slide(title: "Transfer functions")[
+  #set text(size: 18pt)
+  #v(1em)
+  #grid(
+    columns: (55%, 1fr),
+    column-gutter: 10pt,
+    [
+      #animsvg(
+        read("./figs/ip-parameterization.svg"),
+        (i, im) => only(i)[
+          #image.decode(im, width: 90%)
+        ],
+        (hide: ("g184",)),
+        (display: ("g184",)),
+        handout: HANDOUT_MODE,
+      )
+      Re-parameterize image plane:
+      $ (alpha, beta) arrow.r (r_"em", g^star) $
 
-  Measuring metric parameters using properties of the Fe K$alpha$ line
-  - Reflection models given some illuminating flux
+      Encode *relativistic effects* in *transfer functions* (Cunningham, 1975)
+      - Can be pre-computed, efficiently interpolated
 
-  Interested in how the *geometry* of the *(spacetime|disc|corona)* changes spectral profile
+      Transfer functions can be *augmented* in various ways (Baker & Young, in prep):
+      - Include *timing* information, *optical depth* from radiative transfer, *polarization*, image parameters, and so on...
+    ],
+    [
+      $
+      F(E_"obs") &= integral.double I(E_"obs") dif alpha dif beta \
+      arrow.b \
+      F(E_"obs") &= integral.double I(E_"obs") #text(fill: PRIMARY_COLOR)[$abs( (partial (alpha, beta)) / (partial (r_"em", g^star)) )$] dif r_"em" dif g^star \
+      $
+      #v(1em)
+      With *Liouville's Theorem*, can now entirely express physics in the *frame of the disc*, and use transfer functions to "ray-trace back".
 
-  Building models of *reflection spectra* and associated *reverberation lags*
+      #image("./figs/radiative-transfer.svg", width: 90%)
+    ]
+  )
 ]
 
 #slide(title: "Our immediate needs")[
@@ -247,17 +287,19 @@
   dif s^2 = g_(t t) dif t^2 + g_(r r) dif r^2 + g_(theta theta) dif theta^2 + g_(phi phi) dif phi^2  + 2 g_(t phi) dif t dif phi
   $
 
+  - *Optically thick* accretion discs
+
   We calculate *Cunningham transfer functions* to encode GR effects
-
-  Involves solving for _specific_ geodesics, not just the image plane
-  - Calculating the change-of-variable Jacobian
-
-  Using *optimizers* to solve boundary value problems
+  - Involves solving for _specific_ geodesics, not full image plane
+  - Using *optimizers* to solve boundary value problems
   - *automatic differentiation* to trace dual numbers through the ODE system
 ]
 
 #slide(title: "Applications on the horizon")[
   #set align(horizon)
+
+  X-ray tests of GR
+
   Things we are also looking to do
   - X-ray tests of relativity
   - Johannsen Psaltis metric
@@ -289,6 +331,73 @@
   Only used coordinates that have singularities at the horizon
   - Use coordinate transforms that give horizon penetrating coordinates
   - Thinking about ways of making these transforms automatic
+]
+
+#slide(title: "Catalogue of spacetimes")[
+  Maintain a library of spacetimes:
+
+  #grid(
+    columns: (50%, 1fr),
+    column-gutter: 10pt,
+    row-gutter: 0.5em,
+    [
+      - Minkowski
+      - Kerr
+      - Kerr + Dark Matter
+    ],
+    [
+      - Kerr + Refractive Bubble
+      - Kerr-Newman
+      - Morris-Thorne Wormhole
+    ],
+    [
+      #v(0.5em)
+      Implement a *new metric*:
+      #v(0.5em)
+      #set text(size: 15pt)
+      ```julia
+      # `T` lets us pick number type
+      struct Schwarzschild{T} <:
+              AbstractStaticAxisSymmetric{T}
+          M::T
+      end
+
+      # event horizon; boundary of integration
+      Gradus.inner_radius(m::Schwarzschild) = 2 * m.M
+
+      # define the static, axis-symmetric components
+      function Gradus.metric_components(m::Schwarzschild, x)
+          r, θ = x
+          dt = -(1 - (2m.M / r))
+          dr = -1 / dt
+          dθ = r^2
+          dϕ = r^2 * sin(θ)^2
+          dtdϕ = zero(r)
+          return SVector(dt, dr, dθ, dϕ, dtdϕ)
+      end
+      ```
+    ],
+    [
+      - No-$bb(Z)_2$
+      - Dilaton-Axion
+      - Johannsen(-Psaltis)
+      - ...
+      #v(1fr)
+      Sanity check:
+      #v(0.5em)
+      #text(size: 15pt)[
+      ```julia
+      using Symbolics, Latexify
+      ds = @variables dt, dr, dθ, dϕ, r, θ, M
+      comp = metric_components(Schwarzschild(M), (r, θ))
+      sum(ds[i]^2 * comp[i] for i in 1:4) |> latexify
+      ```
+      #v(0.5em)
+      $ r^2 dif theta^2 + dif t^2 ( -1 + (2 M)/r ) +  (- dif r^2) / (-1 + (2 M)/r) + sin^2 ( theta ) r^2 dif phi^2 $
+      #v(2em)
+      ]
+    ]
+  )
 ]
 
 #slide(title: "GPWG")[
