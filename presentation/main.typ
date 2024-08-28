@@ -289,20 +289,46 @@
 
   - *Optically thick* accretion discs
 
-  We calculate *Cunningham transfer functions* to encode GR effects
-  - Involves solving for _specific_ geodesics, not full image plane
+  #v(1em)
+
+  Mainly interested in solving for _specific_ geodesics, not full image plane
   - Using *optimizers* to solve boundary value problems
   - *automatic differentiation* to trace dual numbers through the ODE system
+
+  #v(1em)
+
+  Good *verification schemes*: multiple approaches to the same problem
+  - implement *conceptually simple*, but *computational slow* methods to check the *conceptually difficult*, but *computationally fast*
+  - Extensive and ever-growing *test-suite*
 ]
 
 #slide(title: "Applications on the horizon")[
-  #set align(horizon)
+  #set text(size: 20pt)
 
-  X-ray tests of GR
+  #grid(
+    columns: (50%, 1fr),
+    [
+      X-ray tests of GR:
+      - Using reflection spectra to measure metric parameters
+      #align(center)[
+        #image("./figs/deformed-lineprofiles.svg", width: 70%)
+      ]
 
-  Things we are also looking to do
-  - X-ray tests of relativity
-  - Johannsen Psaltis metric
+      #v(1em)
+      Line profiles become *degenerate* when ISCOs are equal
+      - Can *timing* lift that degeneracy?
+      - Do more complete models lift the degeneracy?
+    ],
+    [
+      #set align(center)
+      #image("./figs/bambi-figure.svg", width: 80%)
+      #align(right)[#text(size: 12pt)[Above figure from Bambi et al., 2023 #h(2em)]]
+
+        #image("./figs/deformed-isco.svg", width: 90%)
+    ],
+  )
+
+
 ]
 
 #subtitle-slide[
@@ -319,7 +345,10 @@
 ]
 
 #slide(title: "Briefly looked at before")[
-  #set align(horizon)
+
+  #align(center)[
+    #image("./figs/photon-rings.svg", width: 75%)
+  ]
 
   Charged spacetimes
 
@@ -331,6 +360,16 @@
   Only used coordinates that have singularities at the horizon
   - Use coordinate transforms that give horizon penetrating coordinates
   - Thinking about ways of making these transforms automatic
+]
+
+#slide(title: "Breaking symmetries")[
+  No $bb(Z)_2$ metric:
+  #align(center)[
+    #image("./figs/chen-pu-24.png", width: 75%)
+    #align(right, text(size: 12pt)[Above figure from Chen & Pu, 2024])
+    #move(dx:-26pt, image("./figs/noz-metric-images.svg", width: 75%))
+  ]
+  Useful for validating other GRRT codes
 ]
 
 #slide(title: "Catalogue of spacetimes")[
@@ -406,6 +445,9 @@
   Studying horizonless compact objects
   - Pattern speed (conroy 2023)
   - Photon rings / lensing bands
+
+  Emergent features:
+  - new features added will work for all implemented spacetimes; define one new observable, test it on everything
 ]
 
 #slide(title: "Thank you")[
