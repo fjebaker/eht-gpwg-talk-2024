@@ -4,6 +4,6 @@ Slides and material for a short talk I gave for the EHT Gravitational Physics Wo
 
 ## Citations and attributions
 
-- Font
+- Font used: [Nimbus Sans L](https://fontlibrary.org/en/font/nimbus-sans-l) GPL
 - Utah Teapot by [zzubnik](https://www.thingiverse.com/thing:852078/files) CC0 BY SA
 
