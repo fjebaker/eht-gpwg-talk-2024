@@ -48,8 +48,9 @@
   1. Gradus.jl
     - Spacetime agnostic approaches to general relativistic ray-tracing
     - Decomposing and piecing together model components
-  2. Our immediate applications in X-ray astronomy
-    - Relativistic blurring of reflection spectra
+  2. Our immediate applications
+    - Accretion in X-ray: relativistic reflection spectra
+    - Our needs and solutions
     - X-ray tests of GR?
   3. Possible applications for the GPWG
     - Catalogue of spacetimes
@@ -311,6 +312,7 @@
       X-ray tests of GR:
       - Using reflection spectra to measure metric parameters
       #align(center)[
+        // TODO: this needs a legend
         #image("./figs/deformed-lineprofiles.svg", width: 70%)
       ]
 
@@ -365,11 +367,16 @@
 #slide(title: "Breaking symmetries")[
   No $bb(Z)_2$ metric:
   #align(center)[
-    #image("./figs/chen-pu-24.png", width: 75%)
+    #image("./figs/chen-pu-24.png", width: 70%)
     #align(right, text(size: 12pt)[Above figure from Chen & Pu, 2024])
-    #move(dx:-26pt, image("./figs/noz-metric-images.svg", width: 75%))
+    #move(dx:-26pt, image("./figs/noz-metric-images.svg", width: 70%))
   ]
+  #set text(size: 18pt)
   Useful for validating other GRRT codes
+  - Export transfer function tables and fit models to data directly (_well_, almost!)
+  #align(center)[
+    #image("./figs/github-bug-report.png", width: 57%)
+  ]
 ]
 
 #slide(title: "Catalogue of spacetimes")[
@@ -440,14 +447,27 @@
 ]
 
 #slide(title: "GPWG")[
-  #set align(horizon)
+  Gradus.jl reproduces tests from *Gold et al., 2020*:
+  // figure of the radiative transfer and deflection angle
+  #align(center)[
+    #image("./figs/gold-2022.png", width: 70%)
+  ]
+  #grid(
+    columns: (65%, 1fr),
+    [
+      *Mesh geometry* works, but _untested_ with GRMHD (did not have a use case)
 
-  Studying horizonless compact objects
-  - Pattern speed (conroy 2023)
-  - Photon rings / lensing bands
+      Studying horizonless compact objects
+      - Pattern speed (Conroy et al., 2023)
+      - Photon rings / lensing bands
 
-  Emergent features:
-  - new features added will work for all implemented spacetimes; define one new observable, test it on everything
+      Emergent features:
+      - new features added will work for all implemented spacetimes; define one new observable, test it on everything
+    ],
+    [
+      #image("./figs/teapot.png", width: 100%)
+    ]
+  )
 ]
 
 #slide(title: "Thank you")[
