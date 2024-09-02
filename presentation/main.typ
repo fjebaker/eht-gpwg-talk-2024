@@ -44,22 +44,6 @@
   #align(right)[#image.decode(uob_logo, width: 20%)]
 ]
 
-// #slide(title: "Outline")[
-//   #set align(horizon)
-//   1. Gradus.jl
-//     - Spacetime agnostic approaches to general relativistic ray-tracing
-//     - Decomposing and piecing together model components
-//   2. Our immediate applications
-//     - Accretion in X-ray: relativistic reflection spectra
-//     - Our needs and solutions
-//     - X-ray tests of GR?
-//   3. Possible applications for the GPWG
-//     - Catalogue of spacetimes
-//     - Expedite parameter exploration
-
-//   #v(1em)
-// ]
-
 #slide(title: "Gradus.jl")[
   #set align(horizon)
   #set align(center)
@@ -128,27 +112,27 @@
 
 ]
 
-#slide(title: "Example: toy accretion models")[
-  #v(1em)
-  First approximation of an *accretion disc* is the equatorial plane
-  #set text(size: 20pt)
-  - Interested in set of (stable) *closed time-like orbits* in the equatorial plane
-  - Have *analytic expressions* for $E$ and $L_z$ for certain spacetime classes (e.g. Johannsen, 2013)
-  #v(0.5em)
-  #grid(
-    columns: (50%, 1fr),
-    [
-      #v(0.5em)
-      Can alternatively approach *entirely numerically*: orbit finding routines
-    - Solve an *optimization problem* that minimizes $delta x^r$ and $delta x^theta$.
-    ]
-  )
+// #slide(title: "Example: toy accretion models")[
+//   #v(1em)
+//   First approximation of an *accretion disc* is the equatorial plane
+//   #set text(size: 20pt)
+//   - Interested in set of (stable) *closed time-like orbits* in the equatorial plane
+//   - Have *analytic expressions* for $E$ and $L_z$ for certain spacetime classes (e.g. Johannsen, 2013)
+//   #v(0.5em)
+//   #grid(
+//     columns: (50%, 1fr),
+//     [
+//       #v(0.5em)
+//       Can alternatively approach *entirely numerically*: orbit finding routines
+//     - Solve an *optimization problem* that minimizes $delta x^r$ and $delta x^theta$.
+//     ]
+//   )
 
-  #v(1fr)
-  Others classes of spacetimes can be solved with a *mix of numerical methods* (Baker & Young, in prep.)
-  - E.g. singularity immersed in a vector potential $A_mu$ (e.g. Hackmann et al., 2013)
-  #v(2em)
-]
+//   #v(1fr)
+//   Others classes of spacetimes can be solved with a *mix of numerical methods* (Baker & Young, in prep.)
+//   - E.g. singularity immersed in a vector potential $A_mu$ (e.g. Hackmann et al., 2013)
+//   #v(2em)
+// ]
 
 #slide(title: "Component modelling")[
   #set align(horizon)
@@ -359,32 +343,18 @@
 #slide(title: "What we needed")[
   #set align(horizon)
 
-  *Static, axisymmetric* spacetimes with metrics of the form:
-  $
-  dif s^2 = g_(t t) dif t^2 + g_(r r) dif r^2 + g_(theta theta) dif theta^2 + g_(phi phi) dif phi^2  + 2 g_(t phi) dif t dif phi
-  $
-
-  #v(1em)
-  #uncover("2-")[
-  We mainly concern ourselves with *optically thick* accretion discs.
-  ]
-
-
-  #v(1em)
-
-  #uncover("3-")[
-  For transfer functions: interested in solving for *specific geodesics*, not full image plane
+  Solve for *specific geodesics*, not full image plane
   - Using *optimizers* to solve boundary value problems (e.g. mapping impact parameters)
   - *Automatic differentiation* to trace dual numbers along the geodesics (e.g. Jacobian terms)
-  ]
 
   #v(1em)
 
-  #uncover("4-")[
+  #uncover("2-")[
   Good *verification schemes*: multiple approaches to the same problem
   - Implement *conceptually simple*, but *computational slow* methods to check the *conceptually complex*, but *computationally fast*
   - Extensive and ever-growing *test-suite*
   ]
+  #v(2em)
 ]
 
 #slide(title: "Applications on the horizon")[
@@ -439,30 +409,22 @@
   #v(1em)
 ]
 
-#slide(title: "Examined before")[
-  #set text(size: 20pt)
-  As part of *developing* and *testing* Gradus.jl:
-  - Explored charged spacetimes (e.g. Kerr-Newman, $Q eq.not 0$)
-  - Photon rings and lensing bands within other spacetimes:
+#slide(title: "Previously examined")[
+  #v(2em)
   #grid(
     column-gutter: 20pt,
     columns: (60%, 1fr),
     [
+      #set text(size: 20pt)
+      As part of *developing* and *testing* Gradus.jl:
+      - Explored charged spacetimes (e.g. Kerr-Newman, $Q eq.not 0$)
+      - Photon rings and lensing bands within other spacetimes:
       #align(center)[
         #image("./figs/photon-rings.svg", width: 100%)
-      ]
-      #uncover("3-")[
-      Only used *coordinates* that have *singularities along horizon*:
-      - Not a concrete assumption in the implementation
-      ]
-      #uncover("4-")[
-      - There are *coordinate transforms* that give horizon penetrating coordinates
-      - Thinking about methods for making these transforms *automatic*
       ]
     ],
     [
       #set text(size: 18pt)
-      #v(0.5em)
       #uncover("2-")[
       Discontinuous spacetimes, e.g. Kerr with refractive corona:
 
@@ -619,13 +581,18 @@
   ])
   ]
   #v(1em)
-  #set text(size: 20pt)
+  #set text(size: 18pt)
   Gradus.jl source code (GPL-3.0):
   - https://github.com/astro-group-bristol/Gradus.jl
-  #v(1em)
+  #v(0.5em)
   Documentation:
   - https://astro-group-bristol.github.io/Gradus.jl/
-  #v(1em)
+  #v(0.5em)
   Source for slides and figures:
   - https://github.com/fjebaker/eht-gpwg-talk-2024
+  #v(0.5em)
+  #align(right)[
+  Contact: \
+  #link("fergus.baker@bristol.ac.uk")
+  ]
 ]

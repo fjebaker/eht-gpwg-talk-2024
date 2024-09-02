@@ -13,7 +13,7 @@ labels = [
 
 begin
     fig = Figure(size=(500, 350))  
-    ax = Axis(fig[1,1], yscale = log10, ylabel = "Flux (arb.)", xlabel = "Energy (keV)", title = "Reflection spectra for different emissivities")
+    ax = Axis(fig[1,1], yscale = log10, ylabel = "Flux (arb.)", xlabel = "Energy (keV)", title = "Reflection spectra for different ionization")
 
     vspan!(ax, [6.2], [6.5], color = (:grey, 0.3))
 

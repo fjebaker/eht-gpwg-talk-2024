@@ -29,10 +29,10 @@ end
 
 begin
     fig = Figure(size=(400, 350))
-    ax = Axis(fig[1,1], xlabel = "E / E₀", ylabel = "Flux (arb.)", title= "Line profile for different spins")
+    ax = Axis(fig[1,1], xlabel = "E / E₀", ylabel = "Flux (arb.)", title= "Line profile for different inclinations")
     
     _palette = _default_palette()
-    for info in data
+    lns = map(data) do info
         a, d = info
         c = popfirst!(_palette)
         lines!(ax, d..., color = c, linewidth = 2.5)
@@ -44,6 +44,8 @@ begin
         c = popfirst!(_palette)
         lines!(ax, d..., color = c, linewidth = 1.0)
     end
+    
+    Legend(fig[1,1], lns, ["α₁₃ = 0", "α₁₃ = 1.0", "α₁₃ = -1.0"], tellheight = false, tellwidth = false, halign = 0.1, valign = 0.9)
     
     xlims!(ax, 0, 1.4)
     # if i make this zero it seems to not draw certain parts of the figure 
